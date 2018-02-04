@@ -3,6 +3,11 @@
   padding: 0px;
 }
 
+input[type=text] {
+    border: 2px solid red;
+    border-radius: 4px;
+}
+
 .flex-container {
 	display: flex;
 	justify-content: center;
