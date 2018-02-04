@@ -1,5 +1,5 @@
 // number of drops created.
-var nbDrop = 100; 
+var nbDrop = 40;
 
 // function to generate a random number range.
 function randRange( minNum, maxNum) {
@@ -10,8 +10,8 @@ function randRange( minNum, maxNum) {
 function createRain() {
 
 	for( i=1;i<nbDrop;i++) {
-	var dropLeft = randRange(0,1600);
-	var dropTop = randRange(-1000,1400);
+	var dropLeft = randRange(0,window.innerWidth);
+	var dropTop = randRange(0,window.innerHeight);
 
 	$('.rain').append('<div class="drop" id="drop'+i+'"></div>');
 	$('#drop'+i).css('left',dropLeft);
