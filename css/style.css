@@ -1,0 +1,85 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+.flex-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 1200px;
+}
+
+.flex-box {
+	display: flex;
+	position: absolute;
+	left: 0; top: 20; right: 0; bottom: 0;
+	justify-content: center;
+	align-items: center;
+	max-height: 80em;
+
+}
+
+form {
+	font-size: 20px;
+	color: white;
+	font-family: Arial;
+}
+
+.form-textbox {
+	height: 1em;
+	width: 15em;
+	font-size: 40px;
+	background: transparent;
+	color: white;
+	border: none;
+	border-bottom: 3px solid white;
+
+}
+
+
+
+
+
+
+
+
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+}
+
+body {
+background:#0D343A;
+background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(0,0,250,1) ), to(#EE82EE)  );
+
+overflow:hidden;}
+
+
+.drop {
+  background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,0) ), to(rgba(255,255,255,0.6))  );
+	width:1px;
+	height:89px;
+	position: absolute;
+	bottom:200px;
+	-webkit-animation: fall 3s linear infinite;
+}
+
+/* animate the drops*/
+@-webkit-keyframes fall {
+	to {margin-top:900px;}
+}
+@-moz-keyframes fall {
+	to {margin-top:900px;}
+}
