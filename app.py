@@ -3,11 +3,13 @@ import pickle
 from flask import Flask, render_template
 from flask import request
 
-with open("data-processing/keywords.dat", "rb") as k:
-    keywords = pickle.load(k)
+with open("data-processing/keywords.dat", "rb") as f:
+    keywords = pickle.load(f)
 
-with open("data-processing/lyrics.dat", "rb") as l:
-    lyrics = pickle.load(l)
+with open("data-processing/lyrics.dat", "rb") as f:
+    lyrics = pickle.load(f)
+
+
 app = Flask(__name__)
 
 
