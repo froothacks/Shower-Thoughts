@@ -2,7 +2,9 @@ import requests
 import pickle
 
 from itertools import cycle
+from itertools import repeat
 
+TIMEOUT = 3
 
 accessTokens = cycle([
 "J3n5zoDA27CGDoxTlLPsmZW8L_PONjoI8kQ_yWVJkPvpy1ea4Ya8wOSJcG1Bj6bl",
@@ -23,13 +25,26 @@ accessTokens = cycle([
 "tHUTCq9__27auB-V3yd1UnMNLwzX0QzwE0ZcVC5cG7g_f9msZv3fRJ7H_ypcAeTf"
 ])
 
+# accessTokens = repeat("lmlQpx5geldh67aJ2YqHjIG5UGtDNrqwMb9-94N-G72ICN0OjsNGi7a-T5G_6lEE")
+
 def nextHeader():
     return {"Authorization": "Bearer " + next(accessTokens)}
+
+def getWithRetry(*args, **kwargs):
+    try:
+        return requests.get(*args, **kwargs, timeout=TIMEOUT)
+    except requests.exceptions.Timeout as e:
+        print("TIMEOUT - Retrying")
+        return getWithRetry(*args, **kwargs)
+    except Exception as e:
+        print(type(e))
+        print(e)
 
 songAnnotations = []
 
 songIndex = 0
 runningTotal = 0
+
 
 with open("songs-unique.txt") as f:
     songTitles = f.read().split("\n")
@@ -40,7 +55,7 @@ with open("songs-unique.txt") as f:
 
             # Get song id from title
             params = {"q": songTitle}
-            res = requests.get("https://api.genius.com/search", headers=nextHeader(), params=params, timeout=1)
+            res = getWithRetry("https://api.genius.com/search", headers=nextHeader(), params=params)
             json = res.json()
             hits = json["response"]["hits"]
             if len(hits) == 0:
@@ -51,7 +66,7 @@ with open("songs-unique.txt") as f:
 
             # Get song annotations from song id
             params = {"song_id": songid, "per_page": 50, "text_format": "plain"}
-            res = requests.get("https://api.genius.com/referents", headers=nextHeader(), params=params, timeout=1)
+            res = getWithRetry("https://api.genius.com/referents", headers=nextHeader(), params=params)
             json = res.json()
             referents = json["response"]["referents"]
 
