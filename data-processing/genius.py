@@ -11,18 +11,24 @@ songAnnotations = []
 with open("songs.txt") as f:
     songTitles = f.read().split("\n")
     for songTitle in songTitles:
+        print(songTitle, end=": ")
+
         # Get song id from title
         params = {"q": songTitle}
         res = requests.get("https://api.genius.com/search", headers=geniusHeaders, params=params)
         json = res.json()
-        songid = json["response"]["hits"][0]["result"]["id"]
+        hits = json["response"]["hits"]
+        if len(hits) == 0:
+            print("Song not found")
+            continue
+
+        songid = hits[0]["result"]["id"]
 
         # Get song annotations from song id
         params = {"song_id": songid, "per_page": 50, "text_format": "plain"}
         res = requests.get("https://api.genius.com/referents", headers=geniusHeaders, params=params)
         json = res.json()
         referents = json["response"]["referents"]
-        print(songTitle, end=": ")
 
         count = 0
         for referent in referents:
@@ -34,8 +40,7 @@ with open("songs.txt") as f:
                 count += 1
                 songAnnotations.append((lyric, annotation))
 
-        print(count, end=" out of ")
-        print(len(referents))
+        print(count, "out of", len(referents))
 
 print(len(songAnnotations))
 
