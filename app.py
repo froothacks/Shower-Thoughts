@@ -14,8 +14,9 @@ app = Flask(__name__)
 
 
 def suggest_nextlines(inputText, numberLines):
+    print("Input text:",inputText)
     outputText = []
-    text_model = markovify.Text(inputText)
+    text_model = markovify.NewlineText(inputText)
     count = 0
     while len(outputText) < numberLines:
         v = text_model.make_sentence()
@@ -24,15 +25,17 @@ def suggest_nextlines(inputText, numberLines):
         count += 1
         if count > 1000:
             break
+    print ("Output",outputText)
     return outputText
 
 
-def get_lyrics_to_topic(topic):
+def get_lyrics_to_topic(topics):
     corpus = ""
-    if topic in keywords:
-        for uid in keywords[topic]:
-            corpus += lyrics[uid] + "\n"
-    return suggest_nextlines(corpus, 3)
+    for i in topics:
+        if i in keywords:
+             for uid in keywords[i]:
+                corpus += lyrics[uid] + "\n"
+    return suggest_nextlines(corpus, 4)
 
 
 @app.route("/")
@@ -43,8 +46,10 @@ def get_index():
 @app.route("/results")
 def get_results():
     result = request.args.get("key")
-    lyrics = get_lyrics_to_topic(result)
-    return render_template("indexResult.html", result=lyrics)
+    topics = [x.strip().lower() for x in result.split(",")]
+    print(topics)
+    all_lyrics = "<br />".join(get_lyrics_to_topic(topics))
+    return render_template("indexResult.html", result=all_lyrics)
 
 
 if __name__ == '__main__':
