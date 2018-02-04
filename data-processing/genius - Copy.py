@@ -42,16 +42,16 @@ def getWithRetry(*args, **kwargs):
 
 songAnnotations = []
 
-songIndex = 0
-runningTotal = 0
+#songIndex = 0
+#runningTotal = 0
 
-
-with open("songs-unique.txt") as f:
-    songTitles = f.read().split("\n")
-    for songTitle in songTitles:
+import threading
+import time
+def analyzeSongs( threadName, titles):
+    for songTitle in titles:
         try:
-            songIndex += 1
-            print(songIndex, songTitle, end=": ")
+            #songIndex += 1
+            print(songTitle)
 
             # Get song id from title
             params = {"q": songTitle}
@@ -78,16 +78,29 @@ with open("songs-unique.txt") as f:
                 verified = referent["annotations"][0]["verified"]
                 if votes >= 40 or verified:
                     count += 1
-                    runningTotal += 1
                     songAnnotations.append((lyric, annotation))
 
-            print("%d out of %d (Total: %d)" % (count, len(referents), runningTotal))
+            #print("%d out of %d (Total: %d)" % (count, len(referents)))
 
-            if runningTotal >= 30000:
-                break
+            #if runningTotal >= 30000:
+                #break
 
         except Exception as e:
             print(e)
+    print(len(songAnnotations))
+
+    with open("annotations" + str(threadName) + ".dat", "wb") as f:
+        pickle.dump(songAnnotations, f)
+
+with open("testset.txt") as f:
+    songTitles = f.read().split("\n")
+    lengths = len(songTitles)
+    len10 = lengths/10
+    for i in range(0, lengths, int(len10)):
+        print(i)
+        print(len10)
+        t = threading.Thread( target = analyzeSongs("Thread1", songTitles[i:int(i+len10)]))
+        t.start()
 
 
 print(len(songAnnotations))
