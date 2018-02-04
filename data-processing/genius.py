@@ -31,7 +31,7 @@ songAnnotations = []
 songIndex = 0
 runningTotal = 0
 
-with open("songs.txt") as f:
+with open("songs-unique.txt") as f:
     songTitles = f.read().split("\n")
     for songTitle in songTitles:
         try:
