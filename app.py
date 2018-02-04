@@ -45,11 +45,11 @@ def get_index():
 
 @app.route("/results")
 def get_results():
-    result = request.args.get("key")
-    topics = [x.strip().lower() for x in result.split(",")]
+    keywords = request.args.get("key")
+    topics = [s.strip().lower() for s in keywords.split(",")]
     print(topics)
-    all_lyrics = "<br />".join(get_lyrics_to_topic(topics))
-    return render_template("indexResult.html", result=all_lyrics)
+    result = "<br />".join(get_lyrics_to_topic(topics))
+    return render_template("index.html", keywords=keywords, result=result)
 
 
 if __name__ == '__main__':
