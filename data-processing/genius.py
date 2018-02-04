@@ -34,7 +34,7 @@ def getWithRetry(*args, **kwargs):
     try:
         return requests.get(*args, **kwargs, timeout=TIMEOUT)
     except requests.exceptions.Timeout as e:
-        print("TIMEOUT - Retrying")
+        print("[TIMEOUT - Retrying]", end=" \t")
         return getWithRetry(*args, **kwargs)
     except Exception as e:
         print(type(e))
@@ -76,7 +76,7 @@ with open("songs-unique.txt") as f:
                 annotation = referent["annotations"][0]["body"]["plain"]
                 votes = referent["annotations"][0]["votes_total"]
                 verified = referent["annotations"][0]["verified"]
-                if votes >= 40 or verified:
+                if (votes >= 20 or verified) and not (lyric[0] == "[" and lyric[-1] == "]"):
                     count += 1
                     runningTotal += 1
                     songAnnotations.append((lyric, annotation))
