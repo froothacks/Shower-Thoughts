@@ -1,20 +1,19 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from flask import request
-import requests
-
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def get_index():
-	return "Hello World"
+    return render_template("ShowerThoughts.html")
+
 
 @app.route("/results")
 def get_results():
-	
-	return "Hello World"
+    result = request.args.get("key")
+    return render_template("ShowerThoughtsResult.html", result=result)
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)
