@@ -14,7 +14,7 @@
     body {
         height: 100%;
 
-        font: 12pt Nunito;
+        font: 14pt Nunito;
 
         background-color: #0d343a;
         background: -webkit-gradient(
@@ -46,34 +46,37 @@
 
     @-webkit-keyframes fall {
         to {
-            margin-top: 900px;
+            top:100vh;
         }
     }
 
     @-moz-keyframes fall {
         to {
-            margin-top: 900px;
+            top:100vh;
         }
     }
 
     input[type="text"] {
-        border-bottom: 2px solid #0000fa;
+        border-bottom: 2px solid #cccccc;
         border-radius: 0;
         border-right: none;
         border-left: none;
+        border-top: none;
         outline: none;
         text-align: center;
-        border-top: none;
+
+        font: 14pt Nunito;
     }
 
     input[type="text"]:focus, input[type="text"]:hover {
 
+        border-bottom: 2px solid #0000fa;
     }
 
     .banner {
         margin-bottom: 5em;
+        max-height: 12em;
         width: 50%;
-        height: auto;
     }
 
     .frame {
@@ -84,9 +87,13 @@
 
         background: white;
         margin-top: 5em;
-        margin-left: 5em;
-        margin-right: 5em;
+        margin-left: 10em;
+        margin-right: 10em;
         padding: 5em;
+    }
+
+    .rain {
+        overflow: hidden;
     }
 
 
@@ -98,10 +105,10 @@
         <img class="banner" src="/static/Banner.png">
         <form action="/results" method="GET">
             <label>Generate a song about:
-                <input type="text" name="key" value="{{ keywords }}"/>
+                <input type="text" name="key" value="{{ keywords }}" size="40"/>
             </label>
         </form>
-        <p id="result">{{ result|e }}</p>
+        <p id="result">{{ result|safe }}</p>
     </div>
 </div>
 
